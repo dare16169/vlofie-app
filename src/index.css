@@ -1,8 +1,305 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-
 * {
   box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #120b24;
+  color: white;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+/* APP */
+
+.app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #120b24, #25104a);
+  padding-bottom: 90px;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 25px;
+  background: rgba(18, 11, 36, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #ffd84d;
+}
+
+.profile-button {
+  border: none;
+  background: #ffd84d;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* CONTENT */
+
+.content {
+  max-width: 700px;
+  margin: auto;
+  padding: 25px 18px;
+}
+
+/* POSTS */
+
+.post {
+  background: #21143d;
+  border-radius: 22px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.post-image {
+  height: 280px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ff8eb5, #8d65ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 100px;
+  margin-bottom: 15px;
+}
+
+.post h3 {
+  margin: 8px 0;
+}
+
+.post p {
+  color: #d8cbe8;
+}
+
+.like-button {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: #ff6b9d;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* DISCOVER */
+
+.search {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.discover-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.discover-grid div {
+  height: 120px;
+  border-radius: 18px;
+  background: #2c1a50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 50px;
+}
+
+/* CREATE */
+
+.create-page {
+  text-align: center;
+}
+
+.upload-box {
+  height: 220px;
+  border: 2px dashed #ffd84d;
+  border-radius: 20px;
+  margin: 25px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 60px;
+  cursor: pointer;
+}
+
+.upload-box p {
+  font-size: 16px;
+}
+
+textarea {
+  width: 100%;
+  height: 120px;
+  padding: 15px;
+  border-radius: 16px;
+  border: none;
+  resize: none;
+}
+
+.publish-button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 15px;
+  background: #ffd84d;
+  color: #1a1033;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* MESSAGES */
+
+.message-box {
+  height: 350px;
+  overflow-y: auto;
+  background: #21143d;
+  border-radius: 18px;
+  padding: 15px;
+}
+
+.message {
+  background: #3b2369;
+  padding: 12px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+}
+
+.send-area {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.send-area input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+}
+
+.send-area button {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  background: #ff6b9d;
+  color: white;
+  cursor: pointer;
+}
+
+/* NOTIFICATIONS */
+
+.notification {
+  background: #21143d;
+  padding: 18px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+}
+
+/* PROFILE */
+
+.profile-page {
+  text-align: center;
+}
+
+.profile-picture {
+  width: 100px;
+  height: 100px;
+  margin: auto;
+  border-radius: 50%;
+  background: #ff8eb5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 55px;
+  border: 4px solid #ffd84d;
+}
+
+.bio {
+  color: #d8cbe8;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 35px;
+  margin: 25px 0;
+}
+
+.stats p {
+  margin: 5px 0;
+  color: #b9a9ce;
+}
+
+/* BOTTOM NAVIGATION */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 75px;
+  background: #1b1033;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bottom-nav button {
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 20px;
+}
+
+.bottom-nav span {
+  font-size: 10px;
+}
+
+.create-button {
+  background: #ffd84d !important;
+  color: #1a1033 !important;
+  width: 48px;
+  height: 48px;
+  border-radius: 15px !important;
+  font-size: 24px !important;
+}
+
+@media (max-width: 500px) {
+  .content {
+    padding: 18px 12px;
+  }
+
+  .post-image {
+    height: 220px;
+  }
+
+  .stats {
+    gap: 22px;
+  }
 }
