@@ -1,69 +1,97 @@
 import React, { useState } from "react";
 
-type Page =
-  | "home"
-  | "discover"
-  | "create"
-  | "messages"
-  | "notifications"
-  | "profile";
+type Page = "home" | "discover" | "create" | "messages" | "notifications" | "profile";
+
+type Post = {
+  id: number;
+  user: string;
+  caption: string;
+  music: string;
+  likes: number;
+  comments: number;
+  emoji: string;
+  liked?: boolean;
+};
 
 function App() {
   const [page, setPage] = useState<Page>("home");
-  const [posts, setPosts] = useState([
+  const [activeTab, setActiveTab] = useState("For You");
+
+  const [posts, setPosts] = useState<Post[]>([
     {
       id: 1,
       user: "Gloria",
-      caption: "Welcome to my first Vlofie post! ✨",
-      likes: 24,
+      caption: "Welcome to Vlofie ✨💖",
+      music: "Original sound - Gloria",
+      likes: 124,
+      comments: 18,
       emoji: "🌸",
+      liked: false,
     },
     {
       id: 2,
       user: "CreativeGirl",
-      caption: "Having the best day ever! 💖",
-      likes: 56,
+      caption: "Just enjoying life 🦋✨",
+      music: "Good Vibes",
+      likes: 856,
+      comments: 67,
       emoji: "🦋",
+      liked: false,
+    },
+    {
+      id: 3,
+      user: "VlofieCreator",
+      caption: "POV: You made your dream app 😭💜",
+      music: "Dreamy Nights",
+      likes: 2450,
+      comments: 201,
+      emoji: "✨",
+      liked: false,
     },
   ]);
 
   const [caption, setCaption] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState<string[]>([
-    "Hey! 👋",
-    "Welcome to Vlofie!",
+    "Hey Gloria! 👋",
+    "Welcome to Vlofie 💜",
   ]);
 
+  const likePost = (id: number) => {
+    setPosts(
+      posts.map((post) => {
+        if (post.id !== id) return post;
+
+        return {
+          ...post,
+          liked: !post.liked,
+          likes: post.liked ? post.likes - 1 : post.likes + 1,
+        };
+      })
+    );
+  };
+
   const addPost = () => {
-    if (caption.trim() === "") return;
+    if (!caption.trim()) return;
 
-    setPosts([
-      {
-        id: Date.now(),
-        user: "Gloria",
-        caption: caption,
-        likes: 0,
-        emoji: "✨",
-      },
-      ...posts,
-    ]);
+    const newPost: Post = {
+      id: Date.now(),
+      user: "Gloria",
+      caption,
+      music: "Original sound - Gloria",
+      likes: 0,
+      comments: 0,
+      emoji: "💖",
+      liked: false,
+    };
 
+    setPosts([newPost, ...posts]);
     setCaption("");
     setPage("home");
   };
 
-  const likePost = (id: number) => {
-    setPosts(
-      posts.map((post) =>
-        post.id === id
-          ? { ...post, likes: post.likes + 1 }
-          : post
-      )
-    );
-  };
-
   const sendMessage = () => {
-    if (newMessage.trim() === "") return;
+    if (!newMessage.trim()) return;
 
     setMessages([...messages, newMessage]);
     setNewMessage("");
@@ -72,80 +100,123 @@ function App() {
   return (
     <div className="app">
 
-      {/* HEADER */}
-      <header className="header">
-        <h1>Vlofie ✨</h1>
+      <header className="top-header">
+        <h1 onClick={() => setPage("home")}>Vlofie</h1>
 
-        <button
-          className="profile-button"
-          onClick={() => setPage("profile")}
-        >
+        <button onClick={() => setPage("profile")}>
           👤
         </button>
       </header>
 
-      {/* MAIN CONTENT */}
-      <main className="content">
+      <main>
 
         {page === "home" && (
-          <div>
-            <h2>For You 🔥</h2>
+          <div className="feed-page">
 
-            {posts.map((post) => (
-              <div className="post" key={post.id}>
+            <div className="feed-tabs">
+              <button
+                className={activeTab === "Following" ? "active-tab" : ""}
+                onClick={() => setActiveTab("Following")}
+              >
+                Following
+              </button>
 
-                <div className="post-image">
-                  {post.emoji}
+              <button
+                className={activeTab === "For You" ? "active-tab" : ""}
+                onClick={() => setActiveTab("For You")}
+              >
+                For You
+              </button>
+            </div>
+
+            <div className="video-feed">
+
+              {posts.map((post) => (
+                <div className="video-post" key={post.id}>
+
+                  <div className="video-background">
+                    <span>{post.emoji}</span>
+                  </div>
+
+                  <div className="video-info">
+
+                    <div className="post-details">
+                      <h3>@{post.user}</h3>
+                      <p>{post.caption}</p>
+                      <p className="music">🎵 {post.music}</p>
+                    </div>
+
+                    <div className="video-actions">
+
+                      <button onClick={() => likePost(post.id)}>
+                        <span className={post.liked ? "liked" : ""}>
+                          ❤️
+                        </span>
+                        <small>{post.likes}</small>
+                      </button>
+
+                      <button>
+                        💬
+                        <small>{post.comments}</small>
+                      </button>
+
+                      <button>
+                        🔖
+                        <small>Save</small>
+                      </button>
+
+                      <button>
+                        ↗️
+                        <small>Share</small>
+                      </button>
+
+                    </div>
+
+                  </div>
+
                 </div>
+              ))}
 
-                <h3>@{post.user}</h3>
+            </div>
 
-                <p>{post.caption}</p>
-
-                <button
-                  className="like-button"
-                  onClick={() => likePost(post.id)}
-                >
-                  ❤️ {post.likes}
-                </button>
-
-              </div>
-            ))}
           </div>
         )}
 
         {page === "discover" && (
-          <div>
+          <div className="normal-page">
             <h2>Discover 🔍</h2>
 
             <input
               className="search"
-              placeholder="Search videos, people..."
+              placeholder="Search Vlofie..."
             />
 
             <div className="discover-grid">
               <div>🌸</div>
+              <div>🦋</div>
               <div>🎵</div>
               <div>✨</div>
               <div>💖</div>
-              <div>🦋</div>
               <div>🔥</div>
+              <div>👗</div>
+              <div>🎮</div>
+              <div>🍰</div>
             </div>
           </div>
         )}
 
         {page === "create" && (
-          <div className="create-page">
+          <div className="normal-page create-page">
 
-            <h2>Create a Post ✨</h2>
+            <h2>Create a Vlofie ✨</h2>
 
             <div className="upload-box">
-              📸
+              <span>📸</span>
               <p>Upload a photo or video</p>
             </div>
 
             <textarea
-              placeholder="What's happening?"
+              placeholder="Write a caption..."
               value={caption}
               onChange={(e) => setCaption(e.target.value)}
             />
@@ -154,23 +225,20 @@ function App() {
               className="publish-button"
               onClick={addPost}
             >
-              Publish 🚀
+              Publish ✨
             </button>
 
           </div>
         )}
 
         {page === "messages" && (
-          <div className="messages-page">
+          <div className="normal-page">
 
             <h2>Messages 💬</h2>
 
             <div className="message-box">
               {messages.map((message, index) => (
-                <div
-                  className="message"
-                  key={index}
-                >
+                <div className="message" key={index}>
                   {message}
                 </div>
               ))}
@@ -178,9 +246,9 @@ function App() {
 
             <div className="send-area">
               <input
+                placeholder="Write a message..."
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Write a message..."
               />
 
               <button onClick={sendMessage}>
@@ -192,92 +260,99 @@ function App() {
         )}
 
         {page === "notifications" && (
-          <div>
-            <h2>Notifications 🔔</h2>
+          <div className="normal-page">
+
+            <h2>Activity 🔔</h2>
 
             <div className="notification">
-              ❤️ CreativeGirl liked your post!
+              ❤️ CreativeGirl liked your Vlofie
             </div>
 
             <div className="notification">
-              👤 Someone started following you!
+              👤 You have a new follower!
             </div>
 
             <div className="notification">
-              💬 You have a new message!
+              💬 Someone commented on your post
             </div>
+
           </div>
         )}
 
         {page === "profile" && (
-          <div className="profile-page">
+          <div className="normal-page profile-page">
 
-            <div className="profile-picture">
-              👩🏾
-            </div>
+            <div className="profile-picture">👩🏾</div>
 
             <h2>Gloria ✨</h2>
 
-            <p>@gloria</p>
+            <p className="username">@gloria</p>
 
-            <p className="bio">
-              Welcome to my Vlofie profile 💖✨
-            </p>
+            <button className="edit-profile">
+              Edit Profile
+            </button>
 
             <div className="stats">
 
               <div>
                 <strong>{posts.length}</strong>
-                <p>Posts</p>
+                <span>Posts</span>
               </div>
 
               <div>
                 <strong>120</strong>
-                <p>Followers</p>
+                <span>Followers</span>
               </div>
 
               <div>
                 <strong>80</strong>
-                <p>Following</p>
+                <span>Following</span>
               </div>
 
             </div>
 
-            <h3>My Posts ✨</h3>
+            <h3>My Vlofies ✨</h3>
+
+            <div className="profile-grid">
+              {posts.map((post) => (
+                <div key={post.id}>
+                  {post.emoji}
+                </div>
+              ))}
+            </div>
 
           </div>
         )}
 
       </main>
 
-      {/* BOTTOM NAVIGATION */}
       <nav className="bottom-nav">
 
         <button onClick={() => setPage("home")}>
-          🏠
-          <span>Home</span>
+          <span>🏠</span>
+          <small>Home</small>
         </button>
 
         <button onClick={() => setPage("discover")}>
-          🔍
-          <span>Discover</span>
+          <span>🔍</span>
+          <small>Discover</small>
         </button>
 
         <button
-          className="create-button"
+          className="create-nav"
           onClick={() => setPage("create")}
         >
           ➕
         </button>
 
         <button onClick={() => setPage("messages")}>
-          💬
-          <span>Messages</span>
+          <span>💬</span>
+          <small>Inbox</small>
         </button>
 
         <button onClick={() => setPage("notifications")}>
-          🔔
-          <span>Alerts</span>
+          <span>🔔</span>
+          <small>Alerts</small>
         </button>
 
       </nav>
